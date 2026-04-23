@@ -3,33 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Astronaut Explorer - Fixed Layout</title>
+    <title>Astronaut Explorer - Flip Message</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Poppins", sans-serif; }
-        
-        body { 
-            background: #eeeeea; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            overflow-x: hidden; 
-        }
-
-        .wrapper { 
-            width: 100%; 
-            max-width: 1200px; 
-            padding: 20px; 
-        }
-
-        .container { 
-            height: 450px; 
-            display: flex; 
-            flex-direction: row;
-            justify-content: center; 
-            width: 100%; 
-        }
+        body { background: #eeeeea; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        .wrapper { width: 100%; max-width: 1200px; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .container { height: 450px; display: flex; flex-wrap: nowrap; justify-content: start; width: 100%; }
         
         input { display: none; }
         
@@ -38,13 +18,13 @@
             margin: 0 10px;
             transition: 0.6s cubic-bezier(.28, -0.03, 0, 0.99);
             perspective: 1000px;
-            cursor: pointer;
-            height: 100%;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Saat kartu dipilih/melebar */
         input:checked + .card-wrapper { 
             width: 600px; 
+            z-index: 10;
         }
 
         .card-inner {
@@ -66,87 +46,89 @@
             backface-visibility: hidden;
             border-radius: 2rem;
             overflow: hidden;
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.8);
         }
 
-        /* TAMPILAN DEPAN */
         .card-front {
             background-color: #000;
             display: flex;
             align-items: flex-end;
+            z-index: 2;
         }
 
         .card-front::before { 
             content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 20%); z-index: 1; 
+            background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 50%); z-index: 1; 
         }
 
-        .video-bg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+        .video-bg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; object-fit: contain; z-index: 0; background: #000; }
 
-        /* TAMPILAN BELAKANG (SURAT) */
         .card-back {
             background-color: #f5f5dc;
             transform: rotateY(180deg);
             display: flex;
             flex-direction: column;
-            padding: 30px;
+            padding: 30px 20px; /* Diperkecil agar ruang konten lebih luas */
             color: black;
+            z-index: 1;
         }
 
+        /* --- BAGIAN EDIT UNTUK SCROLL --- */
         .letter-content {
             font-family: "Times New Roman", Times, serif;
-            font-size: 12pt;
+            font-size: 13pt; /* Sedikit lebih besar untuk HP */
+            color: #000;
             line-height: 1.6;
             text-align: left;
-            overflow-y: auto; /* Scroll aktif */
-            flex-grow: 1; /* Biar ngisi ruang kosong */
+            width: 100%;
+            flex-grow: 1; /* Mengambil sisa ruang yang ada */
+            overflow-y: auto; /* Aktifkan scroll vertikal */
             padding-right: 10px;
-            -webkit-overflow-scrolling: touch;
-            touch-action: pan-y;
+            -webkit-overflow-scrolling: touch; /* Scroll halus di iPhone */
+            touch-action: pan-y; /* Memastikan gesture scroll dikenali */
         }
 
-        /* Scrollbar Style */
-        .letter-content::-webkit-scrollbar { width: 4px; }
-        .letter-content::-webkit-scrollbar-thumb { background: #d1d1bc; border-radius: 10px; }
-
-        .row { 
-            color: white; 
-            display: flex; 
-            width: 100%; 
-            position: relative; 
-            z-index: 5; 
-            align-items: center; 
-            pointer-events: none; /* Biar klik tembus ke lingkaran angka */
+        /* Gaya Scrollbar agar minimalis */
+        .letter-content::-webkit-scrollbar {
+            width: 4px;
         }
+        .letter-content::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+
+        .row { color: white; display: flex; flex-wrap: nowrap; width: 100%; position: relative; z-index: 5; align-items: center; }
         
         .icons { 
             background: #223; color: white; display: flex; border-radius: 50%; 
             width: 50px; height: 50px; min-width: 50px; justify-content: center; 
             align-items: center; margin: 15px; font-weight: bold; cursor: pointer;
-            pointer-events: auto; /* Tombol ini baru bisa diklik */
             transition: 0.3s;
+            position: relative;
+            z-index: 20;
         }
 
         .description { 
-            opacity: 0; 
-            transform: translateY(20px); 
-            transition: 0.3s; 
-            white-space: nowrap;
+            display: flex; justify-content: center; flex-direction: column; 
+            overflow: hidden; height: 80px; width: 520px; opacity: 0; 
+            transform: translateY(30px); transition: all 0.3s ease; 
         }
 
         input:checked + .card-wrapper .description { opacity: 1; transform: translateY(0); }
 
-        /* Gambar Kartu */
+        .description h4 { text-transform: uppercase; font-size: 1.2rem; text-align: left; }
+        .description p { color: #b0b0ba; font-size: 0.9rem; text-align: left; }
+
         .card-front.bg1 { background-image: url('https://www.image2url.com/r2/default/images/1776909952896-d729f5ca-4ed1-4fab-afb0-33d4d4ba0136.jpg'); background-size: cover; background-position: center; }
         .card-front.bg2 { background-image: url('https://www.image2url.com/r2/default/images/1776910066967-8dcbbdc9-3d0e-4efd-804b-67186b923383.jpg'); background-size: cover; background-position: center; }
         .card-front.bg3 { background-image: url('https://www.image2url.com/r2/default/images/1776910223267-06fce50b-db07-40ce-aa46-9e96ef21dfd2.jpg'); background-size: cover; background-position: center; }
 
-        /* --- RESPONSIVE UNTUK HP --- */
         @media screen and (max-width: 768px) {
-            .container { flex-direction: column; height: auto; }
-            .card-wrapper { width: 100%; margin: 10px 0; height: 100px; }
-            input:checked + .card-wrapper { width: 100%; height: 450px; }
-            .description { white-space: normal; }
+            .container { height: auto; flex-direction: column; align-items: center; }
+            .card-wrapper { width: 90% !important; height: 100px; margin: 10px 0; }
+            input:checked + .card-wrapper { height: 500px !important; }
+            .card-back { padding: 25px 15px; }
+            .description { width: 100%; }
         }
     </style>
 </head>
@@ -154,21 +136,20 @@
 
     <div class="wrapper">
         <div class="container">
-            
             <input type="radio" name="slide" id="c1" checked>
             <label for="c1" class="card-wrapper">
                 <div class="card-inner" id="inner1">
                     <div class="card-front bg1">
                         <div class="row">
                             <div class="icons" onclick="flipCard(event, 'inner1')">1</div>
-                            <div class="description"><h4>first impression</h4></div>
+                            <div class="description"><h4>12.12.25</h4><p>first impression</p></div>
                         </div>
                     </div>
                     <div class="card-back">
                         <div class="letter-content">
                             <p>hayii bubbaku sayang,<br><br>first impression aku kenal dan ketemu sama kamu itu kamu keren, ganteng, wangi, TINGGI, tapi ngga se ndut di hp... terus juga aku dulu ga hafal nama panjang kamu ahahaha kalau ga liat KIA kamu aku gaakan tau kalau ruma kamu di aserama polisi yang notabenya ayah kamu SELES.... dan kalau aku ga liat absen pengumpulan tugas informatika kamu aku gaakan tau kalau a jr itu ada kepanjangannya, kalau ga di kasih tau eca nama kamu jepa aku pasti sampe sekarang masih panggil kamu zian, tapi kalau zian kaya sama gasih sama dia manggil kamu hehehe</p>
                         </div>
-                        <div class="icons" style="margin: 15px auto 0; background:#000;" onclick="flipCard(event, 'inner1')">↩</div>
+                        <div class="icons" style="margin: 10px auto 0; background:#000;" onclick="flipCard(event, 'inner1')">↩</div>
                     </div>
                 </div>
             </label>
@@ -179,14 +160,14 @@
                     <div class="card-front bg2">
                         <div class="row">
                             <div class="icons" onclick="flipCard(event, 'inner2')">2</div>
-                            <div class="description"><h4>3 month</h4></div>
+                            <div class="description"><h4>3 month</h4><p>buka pesan rahasianya...</p></div>
                         </div>
                     </div>
                     <div class="card-back">
                         <div class="letter-content">
-                            <p>keduaaa, setelah beberapa minggu kenal kamu dan pisisi kita sudah pacaran yes yang seharusnya nunggu 3 bulan / kurleb kita tau satu sama lain apa butuhnya dan harusnya kita bersikap, aku merasa aku ga cocok sama kamu aku merasa kita berada di standart yang berbeda aku merasa aku ga perfect buat sama kamu setiap apa apa aku harusssss membuatnya se perfect mungkin biar setara sama kamu entah dari segi apa aja, awal awalnya aku merasa kaya fiks nihhh relationship terakhir aku bener bener mau sama kamu tapi aku juga sadar kalau sama kamu aku lebih ke obses tapi aku bener bener mikirin ini pas udah ga sama kamu sihhh</p>
+                            <p><br>keduaaa, setelah beberapa minggu kenal kamu dan pisisi kita sudah pacaran yes yang seharusnya nunggu 3 bulan / kurleb kita tau satu sama lain apa butuhnya dan harusnya kita bersikap, aku merasa aku ga cocok sama kamu aku merasa kita berada di standart yang berbeda aku merasa aku ga perfect buat sama kamu setiap apa apa aku harusssss membuatnya se perfect mungkin biar setara sama kamu entah dari segi apa aja, awal awalnya aku merasa kaya fiks nihhh relationship terakhir aku bener bener mau sama kamu tapi aku juga sadar kalau sama kamu aku lebih ke obses tapi aku bener bener mikirin ini pas udah ga sama kamu sihhh<br></p>
                         </div>
-                        <div class="icons" style="margin: 15px auto 0; background:#000;" onclick="flipCard(event, 'inner2')">↩</div>
+                        <div class="icons" style="margin: 10px auto 0; background:#000;" onclick="flipCard(event, 'inner2')">↩</div>
                     </div>
                 </div>
             </label>
@@ -197,14 +178,14 @@
                     <div class="card-front bg3">
                         <div class="row">
                             <div class="icons" onclick="flipCard(event, 'inner3')">3</div>
-                            <div class="description"><h4>rumah sementara</h4></div>
+                            <div class="description"><h4>rumah sementara</h4><p>pesan singkat buat uu...</p></div>
                         </div>
                     </div>
                     <div class="card-back">
                         <div class="letter-content">
                             <p>ketigaaa, setelah semuanya terjadi aku jadi bisa belajar gimana caranya menghargai dan ngasi feedback ke orang terlabih yang sungguh sungguh sama aku, aku jadi lebih bisa ngontrol emosi aku walau ya mungkin kalau pas ga moodnya aku gabisa ngontrol itu tapi beberapa saat aja aku udah bisa ngendaliin moodku sama keadaannya, aku jadi tau kalau ga semua orang harus tetap berada di hidup kita walau kita mau, aku gamau egois aku juga gamau naif walau aku mau, aku cuma mau minta maaf buat segala kesalahanku yang bikin luka lama mu menjadi lebih sakit yang menambah goresan goresan di hatimu, im so sorryy bb... semoga dimanapun kamu berada dan apa yang kamu lakukan selalu dilancarkan ya terlebih semoga kamu selalu sehat senantiasa dan bahagia yes yes yes</p>
                         </div>
-                        <div class="icons" style="margin: 15px auto 0; background:#000;" onclick="flipCard(event, 'inner3')">↩</div>
+                        <div class="icons" style="margin: 10px auto 0; background:#000;" onclick="flipCard(event, 'inner3')">↩</div>
                     </div>
                 </div>
             </label>
@@ -213,19 +194,19 @@
             <label for="c4" class="card-wrapper">
                 <div class="card-inner" id="inner4">
                     <div class="card-front">
-                        <video autoplay loop playsinline class="video-bg" id="myVideo">
+                        <video autoplay loop playsinline muted class="video-bg" id="myVideo">
                             <source src="https://www.image2url.com/r2/default/videos/1776927267730-28f1983f-94a1-4155-9b43-8cd3639b2f90.mp4" type="video/mp4">
                         </video>
                         <div class="row">
                             <div class="icons" onclick="flipCard(event, 'inner4')">4</div>
-                            <div class="description"><h4>Special For U</h4></div>
+                            <div class="description"><h4>Special For U</h4><p>klik angka untuk lihat pesan...</p></div>
                         </div>
                     </div>
                     <div class="card-back">
                         <div class="letter-content">
                             <p>Love u more and more!<br><br>akuu sayang kamu selamanya sayang kamu, aku gaakan maksa kamu terus sama aku dan gaakan maksa kamu utuk selamanya di hidup akuu bb ini bentuk rasa sayang terakhir ku buat kamu yaitu ngebebasin semua pilihan kamu ngebebasin kamu udah explore hal apapun itu, semoga kamu dipertemukan dengan orang orang yang selalu sayang dan berbuat baik ke kamu dijauhkan dari banyaknya polisi tidur dijalan ibu ibu yang sen kanan tapi belok kiri dan mungkin keadaan terparahnya senar gitar kesayangan kamu putus hehe aku suka semua tentang kamu wangi ftr ice mu itu dan suara yang keluar dari petikan senar gitar yang membentuk intro married with children atau poppies itu pokoknyaa semua aku suka, jadilah manusia yang rendah hati dan kalau mungkin ada orang yang nyakitin kamu ampuni mereka semua seperti kamuu mengampuni dirimu yang berbuat salah yesss, ily 3000</p>
                         </div>
-                        <div class="icons" style="margin: 15px auto 0; background:#000;" onclick="flipCard(event, 'inner4')">↩</div>
+                        <div class="icons" style="margin: 10px auto 0; background:#000;" onclick="flipCard(event, 'inner4')">↩</div>
                     </div>
                 </div>
             </label>
