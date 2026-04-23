@@ -36,7 +36,7 @@
             transform: translate(-50%, -50%); 
             width: 100%; 
             height: 100%; 
-            object-fit: contain; /* Video utuh tanpa zoom */
+            object-fit: contain; 
             z-index: 0; 
             background-color: #000; 
         }
@@ -63,12 +63,11 @@
         input:checked + label { width: 600px; }
         input:checked + label .description { opacity: 1 !important; transform: translateY(0) !important; }
 
-        /* Gambar Kartu */
+        /* Gambar Kartu 1-3 */
         .card[for="c1"] { background-image: url('https://www.image2url.com/r2/default/images/1776909952896-d729f5ca-4ed1-4fab-afb0-33d4d4ba0136.jpg'); }
         .card[for="c2"] { background-image: url('https://www.image2url.com/r2/default/images/1776910066967-8dcbbdc9-3d0e-4efd-804b-67186b923383.jpg'); }
         .card[for="c3"] { background-image: url('https://www.image2url.com/r2/default/images/1776910223267-06fce50b-db07-40ce-aa46-9e96ef21dfd2.jpg'); }
 
-        /* --- RESPONSIVE UNTUK HP --- */
         @media screen and (max-width: 768px) {
             .container { height: auto; flex-direction: column; }
             .card { width: 100% !important; height: 80px; margin: 5px 0; }
@@ -87,6 +86,7 @@
                     <div class="description"><h4>12.12.25</h4><p>Roketto dengan segala kenangannya</p></div>
                 </div>
             </label>
+
             <input type="radio" name="slide" id="c2">
             <label for="c2" class="card">
                 <div class="row">
@@ -94,6 +94,7 @@
                     <div class="description"><h4>12.12.25</h4><p>INI WISHLIST TOP.1</p></div>
                 </div>
             </label>
+
             <input type="radio" name="slide" id="c3">
             <label for="c3" class="card">
                 <div class="row">
@@ -101,9 +102,10 @@
                     <div class="description"><h4>12.12.25</h4><p>only kapit, selamanya kapit</p></div>
                 </div>
             </label>
+
             <input type="radio" name="slide" id="c4">
             <label for="c4" class="card">
-                <video autoplay muted loop playsinline class="video-bg">
+                <video autoplay loop playsinline class="video-bg" id="myVideo">
                     <source src="https://www.image2url.com/r2/default/videos/1776911692901-938d15b1-b03c-488a-bdd7-07a50acae330.mp4" type="video/mp4">
                 </video>
                 <div class="row">
@@ -113,5 +115,16 @@
             </label>
         </div>
     </div>
+
+    <script>
+        // Browser butuh interaksi user (klik) untuk menyalakan suara video autoplay
+        document.body.addEventListener('click', function() {
+            const video = document.getElementById('myVideo');
+            if (video) {
+                video.muted = false;
+                video.play();
+            }
+        }, {once: true});
+    </script>
 </body>
 </html>
