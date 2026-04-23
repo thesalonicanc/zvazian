@@ -55,6 +55,7 @@
             transition: 0.6s cubic-bezier(.28, -0.03, 0, 0.99);
             box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.8);
             position: relative;
+            background-color: #000; /* Warna dasar jika video/gambar load lama */
         }
 
         /* Overlay gelap agar teks terbaca */
@@ -67,6 +68,20 @@
             height: 100%;
             background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 50%);
             z-index: 1;
+        }
+
+        /* Styling Video Background */
+        .video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: cover;
+            z-index: 0;
         }
 
         .card > .row {
@@ -84,7 +99,7 @@
             display: flex;
             border-radius: 50%;
             width: 50px;
-            height: 50px; /* Ditambahkan agar bulat sempurna */
+            height: 50px;
             min-width: 50px;
             justify-content: center;
             align-items: center;
@@ -102,7 +117,6 @@
             width: 520px;
             opacity: 0;
             transform: translateY(30px);
-            transition-delay: 0.3s;
             transition: all 0.3s ease;
         }
 
@@ -131,103 +145,6 @@
             transform: translateY(0) !important;
         }
 
-        /* --- IMAGES --- */
-        /* Gantilah URL ini dengan gambar asli atau placeholder */
+        /* --- IMAGES (Hanya untuk 1, 2, 3) --- */
         .card[for="c1"] { background-image: url('https://www.image2url.com/r2/default/images/1776909952896-d729f5ca-4ed1-4fab-afb0-33d4d4ba0136.jpg'); }
-        .card[for="c2"] { background-image: url('https://www.image2url.com/r2/default/images/1776910066967-8dcbbdc9-3d0e-4efd-804b-67186b923383.jpg'); }
-        .card[for="c3"] { background-image: url('https://www.image2url.com/r2/default/images/1776910223267-06fce50b-db07-40ce-aa46-9e96ef21dfd2.jpg'); }
-        .card[for="c4"] { background-image: url('https://www.image2url.com/r2/default/videos/1776911692901-938d15b1-b03c-488a-bdd7-07a50acae330.gif'); }
-
-        /* --- RESPONSIVE --- */
-        @media screen and (max-width: 768px) {
-            .container {
-                height: 500px;
-                flex-direction: column;
-            }
-            .card {
-                width: 100% !important;
-                height: 80px;
-                margin: 5px 0;
-            }
-            input:checked + label {
-                height: 250px !important;
-                width: 100% !important;
-            }
-        }
-
-        /* --- INI KUNCI AGAR TIDAK GEPENG DI HP --- */
-@media screen and (max-width: 768px) {
-    .container {
-        height: auto; /* Tinggi menyesuaikan jumlah kartu */
-        flex-direction: column; /* Kartu disusun ke bawah */
-    }
-
-    .card {
-        width: 100% !important; /* Kartu memenuhi lebar layar HP */
-        height: 80px; /* Saat tertutup, kartu jadi pendek (gepeng horizontal) */
-        margin: 5px 0;
-    }
-
-    input:checked + label {
-        height: 250px !important; /* Saat diklik, kartu meluas ke bawah */
-        width: 100% !important;
-    }
-
-    .card > .row .description {
-        width: 100%; /* Deskripsi tidak keluar layar */
-    }
-}
-    </style>
-</head>
-<body>
-
-    <div class="wrapper">
-        <div class="container">
-            <input type="radio" name="slide" id="c1" checked>
-            <label for="c1" class="card">
-                <div class="row">
-                    <div class="icons">1</div>
-                    <div class="description">
-                        <h4>12.12.25</h4>
-                        <p>Roketto dengan segala kenangannya</p>
-                    </div>
-                </div>
-            </label>
-
-            <input type="radio" name="slide" id="c2">
-            <label for="c2" class="card">
-                <div class="row">
-                    <div class="icons">2</div>
-                    <div class="description">
-                        <h4>12.12.25</h4>
-                        <p>INI WISHLIST TOP.1</p>
-                    </div>
-                </div>
-            </label>
-
-            <input type="radio" name="slide" id="c3">
-            <label for="c3" class="card">
-                <div class="row">
-                    <div class="icons">3</div>
-                    <div class="description">
-                        <h4>12.12.25</h4>
-                        <p>only kapit, selamanya kapit</p>
-                    </div>
-                </div>
-            </label>
-
-            <input type="radio" name="slide" id="c4">
-            <label for="c4" class="card">
-                <div class="row">
-                    <div class="icons">4</div>
-                    <div class="description">
-                        <h4>for u, bubbaku</h4>
-                        <p>hehehe love u more and more</p>
-                    </div>
-                </div>
-            </label>
-        </div>
-    </div>
-
-</body>
-</html>
+        .card[for="c2"] { background-image: url('
