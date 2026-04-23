@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Astronaut Explorer - Flip Message</title>
+    <title>Astronaut Explorer - Scrollable Message</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Poppins", sans-serif; }
@@ -22,7 +22,6 @@
             z-index: 1;
         }
 
-        /* Kartu yang dipilih naik ke atas agar tidak tertutup */
         input:checked + .card-wrapper { 
             width: 600px; 
             z-index: 10;
@@ -69,13 +68,14 @@
             transform: rotateY(180deg);
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start; /* Mulai dari atas */
             align-items: center;
-            padding: 40px;
+            padding: 30px 20px;
             color: black;
             z-index: 1;
         }
 
+        /* --- BAGIAN SCROLL TEKS --- */
         .letter-content {
             font-family: "Times New Roman", Times, serif;
             font-size: 12pt;
@@ -83,19 +83,25 @@
             line-height: 1.6;
             text-align: left;
             width: 100%;
-            overflow-y: auto;
+            max-height: 300px; /* Batasi tinggi teks agar bisa di-scroll */
+            overflow-y: auto; /* Munculkan scrollbar jika teks panjang */
+            padding-right: 10px;
+            margin-top: 10px;
         }
+
+        /* Mempercantik tampilan scrollbar (opsional) */
+        .letter-content::-webkit-scrollbar { width: 5px; }
+        .letter-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
 
         .row { color: white; display: flex; flex-wrap: nowrap; width: 100%; position: relative; z-index: 5; align-items: center; }
         
-        /* Area klik angka */
         .icons { 
             background: #223; color: white; display: flex; border-radius: 50%; 
             width: 50px; height: 50px; min-width: 50px; justify-content: center; 
             align-items: center; margin: 15px; font-weight: bold; cursor: pointer;
             transition: 0.3s;
             position: relative;
-            z-index: 20; /* Sangat tinggi supaya bisa diklik */
+            z-index: 20;
         }
 
         .description { 
@@ -117,7 +123,7 @@
             .container { height: auto; flex-direction: column; }
             .card-wrapper { width: 100% !important; height: 100px; margin: 10px 0; }
             input:checked + .card-wrapper { height: 450px !important; }
-            .card-back { padding: 25px; }
+            .letter-content { max-height: 280px; } /* Sesuaikan untuk HP */
         }
     </style>
 </head>
@@ -131,14 +137,14 @@
                     <div class="card-front bg1">
                         <div class="row">
                             <div class="icons" onclick="flipCard(event, 'inner1')">1</div>
-                            <div class="description"><h4>12.12.25</h4><p>first impression</p></div>
+                            <div class="description"><h4>12.12.25</h4><p>Klik angka untuk baca surat...</p></div>
                         </div>
                     </div>
                     <div class="card-back">
                         <div class="letter-content">
-                            <p>hayii bubbaku sayang,<br><br>first impression aku kenal dan ketemu sama kamu itu kamu keren, ganteng, wangi, TINGGI, tapi ngga se ndut di hp... terus juga aku dulu ga hafal nama panjang kamu ahahaha kalau ga liat KIA kamu aku gaakan tau kalau ruma kamu di aserama polisi yang notabenya ayah kamu SELES.... dan kalau aku ga liat absen pengumpulan tugas informatika kamu aku gaakan tau kalau a jr itu ada kepanjangannya, kalau ga di kasih tau eca nama kamu jepa aku pasti sampe sekarang masih panggil kamu zian, tapi kalau zian kaya sama gasih sama dia manggil kamu hehehe</p>
+                            <p>Halo bubbaku sayang,<br><br>Ini adalah surat pertama buat kamu. Makasih ya sudah ada di hidupku dan selalu bikin hari-hariku jadi lebih berwarna. Aku sayang banget sama kamu! Kamu itu orang yang sangat spesial. Kalau teks ini aku buat sangat panjang sampai ke bawah, kamu sekarang sudah bisa men-scrollnya dengan lancar tanpa takut teksnya hilang atau terpotong. Coba saja masukkan teks yang sangat panjang di sini, nanti scrollbar-nya akan muncul di samping secara otomatis.</p>
                         </div>
-                        <div class="icons" style="margin-top:20px; background:#000;" onclick="flipCard(event, 'inner1')">↩</div>
+                        <div class="icons" style="margin-top:15px; background:#000;" onclick="flipCard(event, 'inner1')">↩</div>
                     </div>
                 </div>
             </label>
@@ -149,14 +155,14 @@
                     <div class="card-front bg2">
                         <div class="row">
                             <div class="icons" onclick="flipCard(event, 'inner2')">2</div>
-                            <div class="description"><h4>3 month</h4><p>buka pesan rahasianya...</p></div>
+                            <div class="description"><h4>Wishlist</h4><p>Buka pesan rahasianya...</p></div>
                         </div>
                     </div>
                     <div class="card-back">
                         <div class="letter-content">
-                            <p><br>keduaaa, setelah beberapa minggu kenal kamu dan pisisi kita sudah pacaran yes yang seharusnya nunggu 3 bulan / kurleb kita tau satu sama lain apa butuhnya dan harusnya kita bersikap, aku merasa aku ga cocok sama kamu aku merasa kita berada di standart yang berbeda aku merasa aku ga perfect buat sama kamu setiap apa apa aku harusssss membuatnya se perfect mungkin biar setara sama kamu entah dari segi apa aja, awal awalnya aku merasa kaya fiks nihhh relationship terakhir aku bener bener mau sama kamu tapi aku juga sadar kalau sama kamu aku lebih ke obses tapi aku bener bener mikirin ini pas udah ga sama kamu sihhh<br></p>
+                            <p>Wishlist kita tahun depan:<br>1. Jalan-jalan bareng<br>2. Makan es krim sepuasnya<br>3. Selalu bahagia berdua.<br><br>Amin paling kencang! Semoga semua impian kita bisa terwujud satu per satu ya sayang. I love you!</p>
                         </div>
-                        <div class="icons" style="margin-top:20px; background:#000;" onclick="flipCard(event, 'inner2')">↩</div>
+                        <div class="icons" style="margin-top:15px; background:#000;" onclick="flipCard(event, 'inner2')">↩</div>
                     </div>
                 </div>
             </label>
@@ -167,14 +173,14 @@
                     <div class="card-front bg3">
                         <div class="row">
                             <div class="icons" onclick="flipCard(event, 'inner3')">3</div>
-                            <div class="description"><h4>rumah sementara</h4><p>pesan singkat buat uu...</p></div>
+                            <div class="description"><h4>Selamanya</h4><p>Pesan singkat buat kamu...</p></div>
                         </div>
                     </div>
                     <div class="card-back">
                         <div class="letter-content">
-                            <p>ketigaaa, setelah semuanya terjadi aku jadi bisa belajar gimana caranya menghargai dan ngasi feedback ke orang terlabih yang sungguh sungguh sama aku, aku jadi lebih bisa ngontrol emosi aku walau ya mungkin kalau pas ga moodnya aku gabisa ngontrol itu tapi beberapa saat aja aku udah bisa ngendaliin moodku sama keadaannya, aku jadi tau kalau ga semua orang harus tetap berada di hidup kita walau kita mau, aku gamau egois aku juga gamau naif walau aku mau, aku cuma mau minta maaf buat segala kesalahanku yang bikin luka lama mu menjadi lebih sakit yang menambah goresan goresan di hatimu, im so sorryy bb... semoga dimanapun kamu berada dan apa yang kamu lakukan selalu dilancarkan ya terlebih semoga kamu selalu sehat senantiasa dan bahagia yes yes yes</p>
+                            <p>Only Kapit, selamanya Kapit.<br><br>Gak ada yang bisa gantiin posisi kamu. Tetap jadi alasan aku buat tersenyum setiap hari ya! Kamu adalah bagian terbaik dalam hidupku.</p>
                         </div>
-                        <div class="icons" style="margin-top:20px; background:#000;" onclick="flipCard(event, 'inner3')">↩</div>
+                        <div class="icons" style="margin-top:15px; background:#000;" onclick="flipCard(event, 'inner3')">↩</div>
                     </div>
                 </div>
             </label>
@@ -188,14 +194,14 @@
                         </video>
                         <div class="row">
                             <div class="icons" onclick="flipCard(event, 'inner4')">4</div>
-                            <div class="description"><h4>Special For U</h4><p>klik angka untuk lihat pesan...</p></div>
+                            <div class="description"><h4>Special For U</h4><p>Klik angka untuk lihat pesan...</p></div>
                         </div>
                     </div>
                     <div class="card-back">
                         <div class="letter-content">
-                            <p>Love u more and more!<br><br>akuu sayang kamu selamanya sayang kamu, aku gaakan maksa kamu terus sama aku dan gaakan maksa kamu utuk selamanya di hidup akuu bb ini bentuk rasa sayang terakhir ku buat kamu yaitu ngebebasin semua pilihan kamu ngebebasin kamu udah explore hal apapun itu, semoga kamu dipertemukan dengan orang orang yang selalu sayang dan berbuat baik ke kamu dijauhkan dari banyaknya polisi tidur dijalan ibu ibu yang sen kanan tapi belok kiri dan mungkin keadaan terparahnya senar gitar kesayangan kamu putus hehe aku suka semua tentang kamu wangi ftr ice mu itu dan suara yang keluar dari petikan senar gitar yang membentuk intro married with children atau poppies itu pokoknyaa semua aku suka, jadilah manusia yang rendah hati dan kalau mungkin ada orang yang nyakitin kamu ampuni mereka semua seperti kamuu mengampuni dirimu yang berbuat salah yesss, ily 3000</p>
+                            <p>Love u more and more!<br><br>Video ini spesial buat kamu. Setiap kali kamu merasa lelah, ingat ya kalau aku selalu ada di sini buat dukung kamu. Semangat terus bubbaku! Kamu pasti bisa melewati semuanya.</p>
                         </div>
-                        <div class="icons" style="margin-top:20px; background:#000;" onclick="flipCard(event, 'inner4')">↩</div>
+                        <div class="icons" style="margin-top:15px; background:#000;" onclick="flipCard(event, 'inner4')">↩</div>
                     </div>
                 </div>
             </label>
@@ -205,9 +211,7 @@
 
     <script>
         function flipCard(event, id) {
-            // Mencegah klik menembus ke label (biar kartu nggak nutup sendiri pas di-flip)
             event.stopPropagation();
-            
             const card = document.getElementById(id);
             card.classList.toggle('is-flipped');
             
